@@ -9,25 +9,25 @@ import fileupload from "../models/FileuploadModule.js"
 
 
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'images');
+const storageData = multer.diskStorage({
+    destination:  (req, file, cb) =>{
+        cb(null, './images');
     },
-    filename: function (req, file, cb) {
-        cb(null, uuidv4() + '-' + Date.now() + path.extname(file.originalname));
-    }
+    filename:  (req, file, cb)=> {
+        cb(null,  Date.now()+"--" + file.originalname);
+    },
 });
 
-const fileFilter = (req, file, cb) => {
-    const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    if (allowedFileTypes.includes(file.mimetype)) {
-        cb(null, true);
-    } else {
-        cb(null, false);
-    }
-}
+// const fileFilter = (req, file, cb) => {
+//     const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+//     if (allowedFileTypes.includes(file.mimetype)) {
+//         cb(null, true);
+//     } else {
+//         cb(null, false);
+//     }
+// }
 
-let upload = multer({ storage, fileFilter });
+let upload = multer({ storage: storageData});
 
 
 
@@ -60,5 +60,27 @@ export const createFileupload = (upload.single('photo'), (req, res) => {
 
 
 
+// view
 
-// 
+export const viewFileupload = async (req, res) => {
+    try {
+      const users = await fileupload.find();
+      res.status(200).json(users);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  };
+
+
+  export const DeleteFileupload = async (req, res) => {
+    try {
+      const record = await fileupload.findByIdAndDelete(req.params.id);
+      // await record.remove();
+      // res.send({ data: true });
+  
+      res.status(200).json(record);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  };
+  
