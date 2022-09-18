@@ -5,6 +5,7 @@ import UsersRoute from "./routes/UsersRoute.js";
 import FileuploadRoute from "./routes/FileuploadRoute.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import registrationloginRoute from "./routes/registrationloginRoute.js";
 
 
 const databaseconnection = async () => {
@@ -35,6 +36,7 @@ app.use("/", UsersRoute);
 
 
 app.use("/", FileuploadRoute);
+app.use("/", registrationloginRoute);
 
 
 

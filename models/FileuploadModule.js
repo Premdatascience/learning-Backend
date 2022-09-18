@@ -13,7 +13,7 @@ const fileuploadSchema = new Schema({
     }, 
 
     birthdate: {
-        type: String
+        type: Date
     }
 
 });

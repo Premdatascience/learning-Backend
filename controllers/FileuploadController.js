@@ -33,14 +33,15 @@ let upload = multer({ storage, fileFilter });
 
 export const createFileupload = (upload.single('photo'), (req, res) => {
 
-  const photo = req.body.photo;
+  const photo = req.file;
   const name = req.body.name;
 
-  const birthdate = req.file.birthdate;
+  const birthdate = req.body.birthdate;
 
 
   const newUserData = {
     photo,
+    
     name,
 
     birthdate
