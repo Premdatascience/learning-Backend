@@ -1,16 +1,11 @@
-
+import express from "express";
 import multer from "multer";
-
-const FileuploadRoute = express.Router();
 import path from "path";
 import {v4 as uuidv4} from "uuid"
 
-
-
-
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-      cb(null, 'images');
+      cb(null, 'uploads');
   },
   filename: function(req, file, cb) {   
     console.log(uuidv4() + '-' + Date.now() + path.extname(file.originalname))
@@ -27,4 +22,4 @@ const fileFilter = (req, file, cb) => {
   }
 }
 
-let upload = multer({ storage, fileFilter });
+export const upload = multer({ storage, fileFilter });

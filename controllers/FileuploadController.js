@@ -8,7 +8,7 @@ import fileupload from "../models/FileuploadModule.js"
 
 
 
-export const createFileupload =   (req, res) => {
+export const createFileupload =  async (req, res) => {
   try{
       const file =   new fileupload({
         photo: req.filename? req.file:null,
@@ -16,7 +16,7 @@ export const createFileupload =   (req, res) => {
         birthdate: req.body.birthdate
        
       });
-     file.save();
+    await file.save();
       res.status(201).send('File Uploaded Successfully');
   }catch(error) {
       res.status(400).send(error.message);
