@@ -1,14 +1,12 @@
-import express from "express";
-// import { upload } from "../multer/filehelper.js";
-import { createFileupload ,viewFileupload,DeleteFileupload} from "../controllers/FileuploadController.js";
 
+import multer from "multer";
 
 const FileuploadRoute = express.Router();
 import path from "path";
 import {v4 as uuidv4} from "uuid"
 
 
-import multer from "multer";
+
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -30,12 +28,3 @@ const fileFilter = (req, file, cb) => {
 }
 
 let upload = multer({ storage, fileFilter });
-
-
-FileuploadRoute.post("/fileupload",upload.single('file'), createFileupload);
-FileuploadRoute.get("/viewfileupload", viewFileupload);
-FileuploadRoute.delete("/deletefileupload/:id", DeleteFileupload);
-
-
-
-export default FileuploadRoute;

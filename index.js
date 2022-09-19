@@ -1,11 +1,13 @@
 import express from "express";
-import bodyParser from "body-parser";
+
 import cors from "cors";
 import UsersRoute from "./routes/UsersRoute.js";
 import FileuploadRoute from "./routes/FileuploadRoute.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import registrationloginRoute from "./routes/registrationloginRoute.js";
+
+import path from "path";
 
 
 const databaseconnection = async () => {
@@ -22,7 +24,7 @@ dotenv.config();
 
 const app = express();
 const port = 4000;
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
 
 
