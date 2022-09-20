@@ -6,8 +6,9 @@ import FileuploadRoute from "./routes/FileuploadRoute.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import registrationloginRoute from "./routes/registrationloginRoute.js";
-
+import expressStatic from "express-static";
 import path from "path";
+import { fileURLToPath } from 'url';
 
 
 const databaseconnection = async () => {
@@ -41,7 +42,17 @@ app.use("/", FileuploadRoute);
 app.use("/", registrationloginRoute);
 
 
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// app.use(express.static(__dirname + '/public'));
+// app.use('/uploads', express.static('uploads'));
+
 
 app.get("/", (req, res) => res.send("hello"));
 
