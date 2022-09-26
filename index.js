@@ -5,10 +5,14 @@ import UsersRoute from "./routes/UsersRoute.js";
 import FileuploadRoute from "./routes/FileuploadRoute.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import registrationloginRoute from "./routes/registrationloginRoute.js";
+
 import expressStatic from "express-static";
 import path from "path";
 import { fileURLToPath } from 'url';
+
+import bodyParser from "body-parser";
+import AuthUsersRoute from "./routes/AuthUsersRoute.js";
+import morgan from "morgan";
 
 
 const databaseconnection = async () => {
@@ -26,6 +30,9 @@ dotenv.config();
 const app = express();
 const port = 4000;
 app.use(express.json());
+app.use(morgan ("dev"))
+
+app.use(bodyParser.json());
 app.use(cors());
 
 
@@ -33,15 +40,15 @@ app.use(cors());
 
 app.use("/", UsersRoute);
 
+app.use("/", AuthUsersRoute);
+
 // const Fileupload = require("./routes/FileuploadRoute")
 
 // app.use("/FileuploadRoute", Fileupload)
 
 
+
 app.use("/", FileuploadRoute);
-app.use("/", registrationloginRoute);
-
-
 
 
 
@@ -60,5 +67,5 @@ app.get("/", (req, res) => res.send("hello"));
 
 app.listen(port, () => {
   databaseconnection();
-  console.log("server conected");
+  console.log(`server  is conected to ${port}`);
 });
