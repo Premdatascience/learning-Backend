@@ -4,6 +4,7 @@ import User from "../models/AuthUserModule.js";
 
 import bcrypt from "bcryptjs";
 import  Jwt  from "jsonwebtoken";
+import dotenv from "dotenv";
 
 
 
@@ -61,6 +62,7 @@ export const Login= async (req, res) => {
  var userToken = await Jwt.sign({email:userData.email},'secretORprivateKEY')
 
  res.header('auth',userToken).send(userToken);
+ console.log("loged in");
 
   } catch (err) {
   res.status(400).json(err);
@@ -85,10 +87,13 @@ res.status(400).json(err);
   else{
     const data = await User.find().select(['-password']);
     res.json(data)
+   
   }
 });
   const data =await User.find();
 res.json(data)
+
+
 });
 
 
