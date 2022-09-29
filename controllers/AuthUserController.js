@@ -1,56 +1,79 @@
 import User from "../models/AuthUserModule.js";
-
-import Jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const Register = async (req, res) => {
-  console.log(res.body);
-
+  const newPassword = await bcrypt.hash(req.body.password, 10);
   try {
-    await User.create({
+    const user = await User.create({
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password,
+      password: newPassword,
     });
 
     res.json({ status: "ok" });
   } catch (err) {
-    res.json({ status: "error", err: "duplicate email" });
+    res.json({ status: "Duplicate Email" });
   }
+
 };
 
 export const Login = async (req, res) => {
-  const user = await User.findOne({
-    email: req.body.email,
-    password: req.body.password,
-  });
 
-  if (user) {
-    const token = Jwt.sign(
-      {
-        name: user.name,
-        email: user.email,
-      },
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const user = await User.findOne({ email: email });
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  console.log(isPasswordValid);
+  if (isPasswordValid) {
+    const token = await jwt.sign(
+      { email: user.email, name: user.name },
       "secret123"
     );
 
-    return res.json({ status: "ok", user: token });
+    res.json({ status: "ok", token: token });
   } else {
-    return res.json({ status: "error", user: false });
+    res.json({ status: "Wrong Email or Password" });
   }
+ 
 };
 
 export const Checkapi = async (req, res) => {
 
-const token = req.headers['x-acess-token']
+  const token = req.headers["x-access-token"];
+  const goal = req.body.tempGoal;
 
-try{
-const decoded =Jwt.verify(token,'secret123')
+  const isTokenValid = await jwt.verify(token, "secret123");
+  const email = isTokenValid.email;
 
-const email = decoded.email
-const user = await User.findOne({email:email})
-return {status :"ok",quote:user.quote}
-}catch(error){
-  res.json({status:"error",error:"invalid token"})
-}
+  if (isTokenValid) {
+    await User.updateOne({ email: email }, { $set: { goal: goal } });
+
+    res.json({ status: "ok" });
+  } else {
+    res.json({ status: "Invalid Token" });
+  }
 
 };
+
+export const Checkapi2 = async (req, res) => {
+
+  const token = req.headers["x-access-token"];
+  const isValidToken = await jwt.verify(token, "secret123");
+
+  if (isValidToken) {
+    const email = isValidToken.email;
+    const user = await User.findOne({ email: email });
+    res.json({ status: "ok", goal: user.goal });
+  } else {
+    res.json("Invalid Token");
+  }
+
+};
+
+export const Logout = async (req, res) => {
+
+
+}

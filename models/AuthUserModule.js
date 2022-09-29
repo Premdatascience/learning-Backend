@@ -17,7 +17,7 @@ const AuthuserSchema = new Schema({
         type:String,
         required:true
     },
-    quote:{
+    goal:{
         type:String
     },
 });
