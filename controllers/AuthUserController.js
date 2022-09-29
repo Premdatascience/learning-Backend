@@ -1,99 +1,56 @@
-
 import User from "../models/AuthUserModule.js";
 
-
-import bcrypt from "bcryptjs";
-import  Jwt  from "jsonwebtoken";
-import dotenv from "dotenv";
-
-
-
+import Jwt from "jsonwebtoken";
 
 export const Register = async (req, res) => {
-  
-
-
-try { 
-  var emailExist =  await User.findOne({email:req.body.email});
-  if(emailExist){
-   return res.status(400).json("email already exist")
-  }
-  var hash =await bcrypt.hash(req.body.password,10);
-
-  const user = new User({
-    name:req.body.name,
-    email:req.body.email,
-    password:hash,
-  });
-  var data =await user.save();  
-
-res.json(data);
-
-
-
-} catch (err) {
-  res.status(400).json(err);
-  
-  
-}
-
-
-
-
-// console.log(data); 
-
-
-
-};
-
-export const Login= async (req, res) => {
+  console.log(res.body);
 
   try {
-    var userData =  await User.findOne({email:req.body.email});
-    if(!userData){
-     return res.status(400).json("email not exist")
-    }
+    await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    });
 
-    var validpassword = await bcrypt.compare(req.body.password ,userData.password)
- if(!validpassword){
-  return res.status(400).json("password not vaild")
-
- }
- var userToken = await Jwt.sign({email:userData.email},'secretORprivateKEY')
-
- res.header('auth',userToken).send(userToken);
- console.log("loged in");
-
+    res.json({ status: "ok" });
   } catch (err) {
-  res.status(400).json(err);
-    
+    res.json({ status: "error", err: "duplicate email" });
   }
+};
 
-  // console.log(userToken);
+export const Login = async (req, res) => {
+  const user = await User.findOne({
+    email: req.body.email,
+    password: req.body.password,
+  });
+
+  if (user) {
+    const token = Jwt.sign(
+      {
+        name: user.name,
+        email: user.email,
+      },
+      "secret123"
+    );
+
+    return res.json({ status: "ok", user: token });
+  } else {
+    return res.json({ status: "error", user: false });
+  }
+};
+
+export const Checkapi = async (req, res) => {
+
+const token = req.headers['x-acess-token']
+
+try{
+const decoded =Jwt.verify(token,'secret123')
+
+const email = decoded.email
+const user = await User.findOne({email:email})
+return {status :"ok",quote:user.quote}
+}catch(error){
+  res.json({status:"error",error:"invalid token"})
 }
 
-  const vailduser = (req,res,next)=>{
-  var token = req.header('auth');
-  req.token= token;
-  next();
-}
-
-
-export const ViewRegister= (vailduser,async (req, res)=>{
-Jwt.verify(res.token,'secretORprivateKEY',async(err,data)=>{
-  if(err){
-res.status(400).json(err);
-  }
-  else{
-    const data = await User.find().select(['-password']);
-    res.json(data)
-   
-  }
-});
-  const data =await User.find();
-res.json(data)
-
-
-});
-
-
+};

@@ -2,14 +2,14 @@ import express from "express";
 
 
 
-import { Login, Register, ViewRegister } from "../controllers/AuthUserController.js"; 
+import { Login, Register ,Checkapi } from "../controllers/AuthUserController.js"; 
 
 
 const AuthUsersRoute = express.Router();
 
 AuthUsersRoute.post("/register", Register);
 AuthUsersRoute.post("/login", Login);
-AuthUsersRoute.get("/viewregister", ViewRegister);
+AuthUsersRoute.get("/checkapi", Checkapi);
 
 
 
