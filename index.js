@@ -13,6 +13,7 @@ import { fileURLToPath } from 'url';
 import bodyParser from "body-parser";
 import AuthUsersRoute from "./routes/AuthUsersRoute.js";
 import morgan from "morgan";
+import FormvalRoute from "./routes/FormvalRoute.js";
 
 
 const databaseconnection = async () => {
@@ -51,7 +52,7 @@ app.use("/", AuthUsersRoute);
 app.use("/", FileuploadRoute);
 
 
-
+app.use("/", FormvalRoute);
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
