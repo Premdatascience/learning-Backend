@@ -8,6 +8,7 @@ export const Register = async (req, res) => {
     const user = await User.create({
       name: req.body.name,
       email: req.body.email,
+      role:req.body.role,
       password: newPassword,
     });
 
@@ -28,7 +29,7 @@ export const Login = async (req, res) => {
   const isPasswordValid = await bcrypt.compare(password, user.password);
   console.log(isPasswordValid);
   if (isPasswordValid) {
-    const token = await jwt.sign(
+    const token = jwt.sign(
       { email: user.email, name: user.name },
       "secret123"
     );

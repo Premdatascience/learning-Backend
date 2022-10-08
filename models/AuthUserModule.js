@@ -13,13 +13,15 @@ const AuthuserSchema = new Schema({
         required:true,
         unique:true
     },
+    role:{
+        type:String,
+        required:true
+    },
     password :{
         type:String,
         required:true
     },
-    goal:{
-        type:String
-    },
+
 });
 
 export default model("User", AuthuserSchema);
