@@ -18,7 +18,7 @@ import FormvalRoute from "./routes/FormvalRoute.js";
 
 const databaseconnection = async () => {
   try {
-    await mongoose.connect(process.env.DataBase);
+     mongoose.connect(process.env.DataBase);
     console.log("db is running");
   } catch (err) {
     console.log(err);
