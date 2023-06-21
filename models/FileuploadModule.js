@@ -3,11 +3,15 @@ const {Schema ,model} =mongoose;
 
 const fileuploadSchema = new Schema({
 
-    photo: {
+    file: {
         type: String
     },
 
     name: {
+        type: String
+        
+    }, 
+    filename: {
         type: String
         
     }, 

@@ -6,7 +6,6 @@ import FileuploadRoute from "./routes/FileuploadRoute.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-import expressStatic from "express-static";
 import path from "path";
 import { fileURLToPath } from 'url';
 
@@ -43,25 +42,20 @@ app.use("/", UsersRoute);
 
 app.use("/", AuthUsersRoute);
 
-// const Fileupload = require("./routes/FileuploadRoute")
-
-// app.use("/FileuploadRoute", Fileupload)
-
-
+//fileuploads
 
 app.use("/", FileuploadRoute);
-
-
-app.use("/", FormvalRoute);
+// app.use(express.static("./uploads"));
 const __filename = fileURLToPath(import.meta.url);
-
 const __dirname = path.dirname(__filename);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(__dirname + '/public'));
 
-// app.use(express.static(__dirname + '/public'));
-// app.use('/uploads', express.static('uploads'));
+app.use("/", FormvalRoute);
 
-
+//sample for testing
+app.use("/", FormvalRoute);
+//backend login
 app.get("/", (req, res) => res.send("hello"));
 
 

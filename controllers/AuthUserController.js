@@ -26,7 +26,7 @@ export const Login = async (req, res) => {
 
   const user = await User.findOne({ email: email });
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, user?.password);
   console.log(isPasswordValid);
   if (isPasswordValid) {
     const token = jwt.sign(
@@ -34,7 +34,7 @@ export const Login = async (req, res) => {
       "secret123"
     );
 
-    res.json({ status: "ok", token: token });
+    res.json({ status: "ok", token: token,"role":user?.role });
   } else {
     res.json({ status: "Wrong Email or Password" });
   }

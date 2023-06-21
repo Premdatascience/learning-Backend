@@ -2,16 +2,12 @@
 import fileupload from "../models/FileuploadModule.js"
 // import { upload } from "../multer/filehelper.js";
 
-
-
-
-
-
-
 export const createFileupload =  async (req, res) => {
   try{
+    console.log(req.file)
       const file =   new fileupload({
-        photo: req.filename? req.file:null,
+        file: req.file.filename,
+        filename:req.body.filename,
         name: req.body.name,
         birthdate: req.body.birthdate
        
