@@ -13,6 +13,7 @@ import bodyParser from "body-parser";
 import AuthUsersRoute from "./routes/AuthUsersRoute.js";
 import morgan from "morgan";
 import FormvalRoute from "./routes/FormvalRoute.js";
+import FormtyscRoute from "./routes/FormtyscRoute.js";
 
 
 const databaseconnection = async () => {
@@ -55,6 +56,9 @@ app.use("/", FormvalRoute);
 
 //sample for testing
 app.use("/", FormvalRoute);
+
+//typescript
+app.use("/", FormtyscRoute);
 //backend login
 app.get("/", (req, res) => res.send("hello"));
 
