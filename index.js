@@ -14,6 +14,7 @@ import AuthUsersRoute from "./routes/AuthUsersRoute.js";
 import morgan from "morgan";
 import FormvalRoute from "./routes/FormvalRoute.js";
 import FormtyscRoute from "./routes/FormtyscRoute.js";
+import TypeScripteLoginRoute from "./routes/TypeScripteLoginRoute.js";
 
 
 const databaseconnection = async () => {
@@ -59,6 +60,8 @@ app.use("/", FormvalRoute);
 
 //typescript
 app.use("/", FormtyscRoute);
+app.use("/", TypeScripteLoginRoute);
+
 //backend login
 app.get("/", (req, res) => res.send("hello"));
 

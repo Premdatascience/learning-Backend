@@ -8,7 +8,7 @@ const FormtyscRoute = express.Router();
  FormtyscRoute .post("/formtysccreate",upload.single('file'), createUesers);
  FormtyscRoute .get("/formtyscview", viewUesers);
  FormtyscRoute .get("/formtyscview/:id", viewUesersbyID);
- FormtyscRoute .put("/formtyscupdate/:id", UpdateUesers);
+ FormtyscRoute .put("/formtyscupdate/:id",upload.single('file'), UpdateUesers);
  FormtyscRoute .delete("/formtyscdelete/:id", DeleteUesers);
 
 

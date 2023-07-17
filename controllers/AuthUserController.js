@@ -74,6 +74,34 @@ export const Checkapi2 = async (req, res) => {
 
 };
 
+export const SendOTP = async (req, res) => {
+  const { phoneNumber } = req.body;
+  // Generate OTP
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  // Send OTP to phoneNumber using SMS gateway service
+  // (Integrate with the SMS service of your choice)
+  // Save the otp and phoneNumber in the backend for verification later
+  // Return success response
+  res.json({ success: true });
+
+}
+
+export const VerifyOTP = async (req, res) => {
+  const { phoneNumber, otp } = req.body;
+  // Retrieve the saved OTP for the phoneNumber
+  // Compare the otp with the saved OTP
+  if (otp === savedOtp) {
+    // OTP is valid, authenticate the user and generate session token/JWT
+    // Return success response
+    res.json({ success: true, token: 'your_generated_token' });
+  } else {
+    // Invalid OTP
+    // Return error response
+    res.json({ success: false, message: 'Invalid OTP' });
+  }
+
+}
+
 export const Logout = async (req, res) => {
 
 
