@@ -18,27 +18,43 @@ export const Register = async (req, res) => {
   }
 
 };
-
 export const Login = async (req, res) => {
-
   const email = req.body.email;
   const password = req.body.password;
 
-  const user = await User.findOne({ email: email });
+  try {
+    const user = await User.findOne({ email: email });
 
-  const isPasswordValid = await bcrypt.compare(password, user?.password);
-  console.log(isPasswordValid);
-  if (isPasswordValid) {
-    const token = jwt.sign(
-      { email: user.email, name: user.name },
-      "secret123"
-    );
+    if (!user) {
+      res.json({ status: "User not found" });
+      return;
+    }
 
-    res.json({ status: "ok", token: token,"role":user?.role });
-  } else {
-    res.json({ status: "Wrong Email or Password" });
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (isPasswordValid) {
+      const token = jwt.sign(
+        { email: user.email, name: user.name },
+        "secret123"
+      );
+
+      res.json({ status: "ok", token: token, role: user.role });
+    } else {
+      res.json({ status: "Wrong Email or Password" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.json({ status: "An error occurred" });
   }
- 
+}
+
+export const viewUser = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 };
 
 export const Checkapi = async (req, res) => {
